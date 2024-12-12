@@ -10,7 +10,7 @@ namespace AoC2024
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
-            new Day11().RunWithTimer();
+            new Day12().RunWithTimer();
         }
     }
 }

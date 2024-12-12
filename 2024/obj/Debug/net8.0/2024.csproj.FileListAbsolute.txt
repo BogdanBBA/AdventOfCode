@@ -12,3 +12,4 @@ C:\Users\duedi\Documents\Z. Programming\C#\AdventOfCode\2024\obj\Debug\net8.0\re
 C:\Users\duedi\Documents\Z. Programming\C#\AdventOfCode\2024\obj\Debug\net8.0\2024.pdb
 C:\Users\duedi\Documents\Z. Programming\C#\AdventOfCode\2024\obj\Debug\net8.0\2024.genruntimeconfig.cache
 C:\Users\duedi\Documents\Z. Programming\C#\AdventOfCode\2024\obj\Debug\net8.0\ref\2024.dll
+C:\Users\duedi\Documents\Z. Programming\C#\AdventOfCode\2024\obj\Debug\net8.0\2024.sourcelink.json
