@@ -1,0 +1,14 @@
+C:\Users\duedi\Desktop\AdventOfCode\14\bin\Debug\net8.0\14.exe
+C:\Users\duedi\Desktop\AdventOfCode\14\bin\Debug\net8.0\14.deps.json
+C:\Users\duedi\Desktop\AdventOfCode\14\bin\Debug\net8.0\14.runtimeconfig.json
+C:\Users\duedi\Desktop\AdventOfCode\14\bin\Debug\net8.0\14.dll
+C:\Users\duedi\Desktop\AdventOfCode\14\bin\Debug\net8.0\14.pdb
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.AssemblyInfoInputs.cache
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.AssemblyInfo.cs
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.csproj.CoreCompileInputs.cache
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.dll
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\refint\14.dll
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.pdb
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\14.genruntimeconfig.cache
+C:\Users\duedi\Desktop\AdventOfCode\14\obj\Debug\net8.0\ref\14.dll

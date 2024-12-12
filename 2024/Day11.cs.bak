@@ -1,0 +1,54 @@
+//namespace AoC2024
+//{
+//    public class Day11 : DayProgram
+//    {
+//        public override void Run()
+//        {
+//            const string INPUT = "2 54 992917 5270417 2514 28561 0 990";
+//            const byte NUMBER_OF_BLINKS = 75;
+//
+//            static ulong TotalValues(Dictionary<ulong, ulong> map)
+//                => map.Values.Aggregate(0ul, (x, y) => x + y);
+//
+//            static void AddOrSetInMap(Dictionary<ulong, ulong> map, ulong key, ulong value)
+//                => map[key] = map.TryGetValue(key, out ulong newValueCount) ? newValueCount + value : value;
+//
+//            $" > Remember, {typeof(ulong).Name}.{nameof(ulong.MaxValue)} is {ulong.MaxValue:N0}.".LogDNL();
+//            List<ulong> numbers = [.. INPUT.Split(' ').Select(ulong.Parse)];
+//            Dictionary<ulong, ulong> _map = numbers.ToDictionary(n => n, _ => 1ul);
+//
+//            $" > At the beginning, there were {numbers.Count} numbers in the list.".Log();
+//            for (int time = 1; time <= NUMBER_OF_BLINKS; time++)
+//            {
+//                $"\tblink {time,2}: ".LogNNL();
+//                
+//                KeyValuePair<ulong, ulong>[] pairs = [.. _map];
+//                _map.Clear();
+//                
+//                foreach ((ulong number, ulong numberCount) in pairs)
+//                {
+//                    if (number == 0ul)
+//                    {
+//                        AddOrSetInMap(_map, 1ul, numberCount);
+//                        continue;
+//                    }
+//
+//                    ulong nDigits = number.GetNumberOfDigits();
+//                    if (nDigits % 2 == 0)
+//                    {
+//                        ulong divisor = (ulong)Math.Pow(10, nDigits / 2);
+//                        AddOrSetInMap(_map, number / divisor, numberCount);
+//                        AddOrSetInMap(_map, number % divisor, numberCount);
+//                        continue;
+//                    }
+//
+//                    AddOrSetInMap(_map, number * 2024ul, numberCount);
+//                }
+//
+//                $"we now have {_map.Keys.Count,11:N0} distinct numbers containing {TotalValues(_map),23:N0} numbers".Log();
+//            }
+//
+//            $" > At the end, there are {TotalValues(_map)} numbers in the list.".Log();
+//        }
+//    }
+//}

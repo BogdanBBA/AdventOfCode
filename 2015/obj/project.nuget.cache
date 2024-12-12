@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "2GxdRTxkUkl8scFIsPTEcymqg6sBYL6sXcl20A8S+FwHhW0UVv21jBzKL9yi0Q+AWLsbC9iyKgwWowchSpxA2A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\duedi\\Desktop\\AdventOfCode\\2015\\2015.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\duedi\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
+    "C:\\Users\\duedi\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\duedi\\.nuget\\packages\\system.drawing.common\\8.0.1\\system.drawing.common.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

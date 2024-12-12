@@ -1,0 +1,14 @@
+C:\Users\duedi\Desktop\AdventOfCode\08\bin\Debug\net8.0\08.exe
+C:\Users\duedi\Desktop\AdventOfCode\08\bin\Debug\net8.0\08.deps.json
+C:\Users\duedi\Desktop\AdventOfCode\08\bin\Debug\net8.0\08.runtimeconfig.json
+C:\Users\duedi\Desktop\AdventOfCode\08\bin\Debug\net8.0\08.dll
+C:\Users\duedi\Desktop\AdventOfCode\08\bin\Debug\net8.0\08.pdb
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.AssemblyInfoInputs.cache
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.AssemblyInfo.cs
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.csproj.CoreCompileInputs.cache
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.dll
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\refint\08.dll
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.pdb
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\08.genruntimeconfig.cache
+C:\Users\duedi\Desktop\AdventOfCode\08\obj\Debug\net8.0\ref\08.dll
