@@ -1,6 +1,6 @@
 using AoC2024.MatrixNavigation;
 using AoC2024.ForDay12;
-using Fence = (AoC2024.MatrixNavigation.Coord, AoC2024.MatrixNavigation.Coord);
+using Fence = (AoC2024.MatrixNavigation.Coord A, AoC2024.MatrixNavigation.Coord B);
 using static AoC2024.MatrixNavigation.NavigableMap;
 
 namespace AoC2024
@@ -22,9 +22,6 @@ namespace AoC2024
             public static HashSet<Coord> Get4Neighbours(this Coord coord)
                 => [coord.Move(Cardinal.North), coord.Move(Cardinal.East), coord.Move(Cardinal.South), coord.Move(Cardinal.West)];
 
-            public static Region? IsNeighbourOfAndMatchesRegion(this List<Region> regions, Coord coord, char ch)
-                => regions.FirstOrDefault(region => coord.Get4Neighbours().Select(nC => region.TryGetValue(nC, out Cell? cell) ? cell!.Character : ' ').Distinct().Contains(ch));
-
             public static bool IsNeighbourOf(this Region a, Region b)
             {
                 if (a.AssumedCharacter != b.AssumedCharacter)
@@ -32,25 +29,6 @@ namespace AoC2024
                 List<Coord> neighboursA = [.. a.Cells.Select(cell => cell.Key).SelectMany(Get4Neighbours).Distinct()];
                 List<Coord> neighboursB = [.. b.Cells.Select(cell => cell.Key).SelectMany(Get4Neighbours).Distinct()];
                 return neighboursA.Any(neighboursB.Contains);
-            }
-
-            public static List<Region> MergeNeighbouringRegionsOfSameType(this List<Region> regions)
-            {
-                List<Region> result = [];
-                while (regions.Count > 0)
-                {
-                    Region nextRegion = regions[0];
-                    regions.RemoveAt(0);
-                    List<int> neighbouringRegionIndexes = [.. Enumerable.Range(0, regions.Count).Where(index => regions[index].IsNeighbourOf(nextRegion))];
-                    List<Region> conglomerate = [nextRegion];
-                    foreach (int index in neighbouringRegionIndexes.OrderByDescending(i => i))
-                    {
-                        conglomerate.Add(regions[index]);
-                        regions.RemoveAt(index);
-                    }
-                    result.Add(new([.. conglomerate]));
-                }
-                return result;
             }
         }
 
@@ -63,6 +41,12 @@ namespace AoC2024
                 Cells = [];
             }
 
+            public Region(params Cell[] cells)
+                : this()
+            {
+                AddCells(cells);
+            }
+
             public Region(params Region[] regions)
                 : this()
             {
@@ -72,6 +56,12 @@ namespace AoC2024
             }
 
             public char AssumedCharacter => Cells.First().Value.Character;
+
+            public void AddCells(params Cell[] cells)
+            {
+                foreach (Cell cell in cells)
+                    Cells.Add(cell.Coord, cell);
+            }
 
             public int Count => Cells.Count;
             public bool ContainsKey(Coord coord) => Cells.ContainsKey(coord);
@@ -96,37 +86,74 @@ namespace AoC2024
                         fences.Add(new(coord, neighbour));
                 }
             }
-            return fences;
+            return fences.Select(fence =>
+            {
+                Coord[] orderedCoords = [.. new Coord[] { fence.A, fence.B }.OrderBy(coord => coord.Y).ThenBy(coord => coord.X)];
+                return new Fence(orderedCoords[0], orderedCoords[1]);
+            }).ToHashSet();
         }
 
-        private static (int Area, HashSet<Fence> Fences, int PriceOfFences) CalculatePriceOfFences(Region region)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "it's irritating")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "I might use it")]
+        private static (int Area, HashSet<Fence> Fences, int PriceOfFences) CalculatePriceOfFences_ByFencePieces(Region region)
         {
             int area = CalculateRegionArea(region);
             HashSet<Fence> fences = [.. CalculateRegionFences(region).Distinct()];
             return (area, fences, area * fences.Count);
         }
 
-        private static List<Region> DetermineRegions(NavigableMap map)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "it's irritating")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "I might use it")]
+        private static (int Area, HashSet<Fence> Fences, int PriceOfFences) CalculatePriceOfFences_ByFenceSides(Region region)
         {
-            List<Region> result = [];
-            foreach ((Coord coord, Cell cell) in map.Cells)
-            {
-                Region? region = result.IsNeighbourOfAndMatchesRegion(coord, cell.Character);
-                if (region is null)
-                {
-                    region = new();
-                    result.Add(region);
-                }
-                region.Cells[coord] = cell;
-            }
-            return result.MergeNeighbouringRegionsOfSameType();
+            int area = CalculateRegionArea(region);
+            HashSet<Fence> fences = [.. CalculateRegionFences(region).Distinct()];
+            int priceOfFences = 0; // TODO; see coordinate ordering in CalculateRegionFences return statement
+            return (area, fences, priceOfFences);
         }
 
-        private static void CalculateFencePricingForAllRegions(NavigableMap map)
+        private static List<Region> DetermineRegions(NavigableMap map)
+        {
+            static List<Coord> GetValidNeighbours(Region megaRegion, Coord coord, char character, Dictionary<Coord, bool> included)
+                   => megaRegion.GetUpTo4NeighbouringCells(coord)
+                        .Where(cell => cell.Character == character && !included[cell.Coord])
+                        .Select(cell => cell.Coord)
+                        .ToList();
+
+            static List<Coord> GetDistinctValidNeighbours(Region megaRegion, List<Coord> coords, char character, Dictionary<Coord, bool> included)
+                => coords.SelectMany(coord => GetValidNeighbours(megaRegion, coord, character, included))
+                        .Distinct()
+                        .ToList();
+
+            List<Region> result = [];
+            Region megaRegion = new(map.Cells.Values.ToArray());
+            Dictionary<Coord, bool> included = map.Cells.Keys.ToDictionary(coord => coord, _ => false);
+            while (included.Values.Any(value => !value))
+            {
+                Coord coord = included.First(pair => !pair.Value).Key;
+                char character = megaRegion.Cells[coord].Character;
+                included[coord] = true;
+                Region region = new(megaRegion.Cells[coord]);
+                List<Coord> neighbours = GetValidNeighbours(megaRegion, coord, character, included);
+                do
+                {
+                    foreach (Coord neighbour in neighbours)
+                    {
+                        included[neighbour] = true;
+                        region.AddCells(megaRegion.Cells[neighbour]);
+                    }
+                    neighbours = GetDistinctValidNeighbours(megaRegion, neighbours, character, included);
+                } while (neighbours.Count > 0);
+                result.Add(region);
+            }
+            return result;
+        }
+
+        private static void CalculateFencePricingForAllRegions(NavigableMap map, Func<Region, (int, HashSet<Fence>, int)> priceCalculatorFunc)
         {
             map.DrawMapStr().LogDNL();
             List<Region> regions = DetermineRegions(map);
-            Dictionary<Region, (int Area, HashSet<Fence> Fences, int PriceOfFences)> fencePriceByRegion = regions.ToDictionary(region => region, CalculatePriceOfFences);
+            Dictionary<Region, (int Area, HashSet<Fence> Fences, int PriceOfFences)> fencePriceByRegion = regions.ToDictionary(region => region, priceCalculatorFunc);
 
             $" > There are {fencePriceByRegion.Count} regions (with {fencePriceByRegion.Keys.Distinct().Count()} types of vegetables):".Log();
             string.Join("\n", fencePriceByRegion.Select(pair => $" - region of {pair.Key.Cells.First().Value.Character}: area {pair.Value.Area,3} x {pair.Value.Fences.Count,3} fences = price of {pair.Value.PriceOfFences,6:N0}")).Log();
@@ -137,6 +164,11 @@ namespace AoC2024
         }
 
         public override void Run()
-            => CalculateFencePricingForAllRegions(Parse(ReadFromFile_Strings(@"tests\12-3"), (_, _) => true, (_, ch) => ch));
+        {
+            // price calculation options are CalculatePriceOfFences_ByFenceCount (part 1) or CalculatePriceOfFences_ByFenceSides (part 2)
+            Func<Region, (int, HashSet<Fence>, int)> priceCalculatorFunc = CalculatePriceOfFences_ByFenceSides;
+
+            CalculateFencePricingForAllRegions(Parse(ReadFromFile_Strings(@"12"), (_, _) => true, (_, ch) => ch), priceCalculatorFunc);
+        }
     }
 }
