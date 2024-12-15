@@ -8,7 +8,7 @@ namespace AoC2024.MatrixNavigation
     public enum DirectionsUDLR { Up = 'U', Down = 'D', Left = 'L', Right = 'R' }
     public enum Cardinal { North = 'N', East = 'E', South = 'S', West = 'W' }
 
-    public static class EnumExtensionMethods
+    public static class MatrixExtensionMethods
     {
         public static DirectionsLR ParseAsDirectionLR(this char value) => value switch
         {

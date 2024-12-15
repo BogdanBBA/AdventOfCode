@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace AoC2024
 {
     public static class Utils
@@ -203,6 +205,9 @@ namespace AoC2024
 
             return false; // No repeating pattern
         }
+
+        public static int ParseGroupAsInt(this Match match, int groupNumber)
+            => int.Parse(match.Groups[groupNumber].Value);
 
         public static uint GetNumberOfDigits(this uint number)
             => (uint)(Math.Floor(Math.Log10(number)) + 1);
